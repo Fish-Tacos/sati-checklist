@@ -4,486 +4,631 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HoneyPotSquatch — SATI Expedition Manifest</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0c0f;
-    --bg2: #111318;
-    --bg3: #181c22;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --green: #00e87a;
-    --green-dim: rgba(0,232,122,0.12);
-    --green-mid: rgba(0,232,122,0.25);
-    --amber: #f5a623;
-    --amber-dim: rgba(245,166,35,0.12);
-    --red: #ff4757;
-    --red-dim: rgba(255,71,87,0.12);
-    --text: #e8eaed;
-    --text2: #8a9099;
-    --text3: #555d6b;
-    --mono: 'Space Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
+    --bg: #0a0f0a;
+    --surface: #111811;
+    --surface2: #161f16;
+    --border: #1e2e1e;
+    --green: #00e676;
+    --green-dim: #1a3d1a;
+    --green-mid: #2d5a2d;
+    --amber: #ffb300;
+    --red: #ff5252;
+    --text: #c8d8c8;
+    --text-dim: #6a8a6a;
+    --text-muted: #3a5a3a;
+    --gate-red: #ff5252;
+    --gate-bg: #2a0a0a;
+    --checked-text: #3a5a3a;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Syne', sans-serif;
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; }
-  body { min-height: 100vh; }
 
-  /* HEADER */
-  .header {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,230,118,0.015) 2px,
+      rgba(0,230,118,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,15,10,0.95);
+    backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border);
-    padding: 20px 28px;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .logo span {
+    color: var(--text-dim);
+    font-weight: 400;
+    font-size: 11px;
+    display: block;
+    letter-spacing: 0.1em;
+    font-family: var(--font-mono);
+  }
+
+  .header-right {
     display: flex;
     align-items: center;
     gap: 16px;
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 100;
   }
-  .header-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
-  }
-  .header-title {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--green);
-    text-transform: uppercase;
-  }
-  .header-sub {
+
+  .sync-time {
+    color: var(--text-dim);
     font-size: 11px;
-    color: var(--text3);
-    font-family: var(--mono);
-    margin-left: 4px;
   }
-  .header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
-  .sync-status {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-  }
+
   .sync-btn {
-    font-family: var(--mono);
+    background: var(--green-dim);
+    border: 1px solid var(--green-mid);
+    color: var(--green);
+    font-family: var(--font-mono);
     font-size: 11px;
-    background: transparent;
-    border: 1px solid var(--border2);
-    color: var(--text2);
-    padding: 6px 14px;
-    border-radius: 4px;
+    padding: 5px 12px;
     cursor: pointer;
     letter-spacing: 0.05em;
-    transition: all 0.15s;
+    transition: all 0.2s;
   }
-  .sync-btn:hover { border-color: var(--green); color: var(--green); }
 
-  /* STATS */
+  .sync-btn:hover { background: var(--green-mid); }
+
+  /* Stats bar */
   .stats-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
   }
+
   .stat {
-    background: var(--bg);
-    padding: 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  .progress-bar-wrap {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
-  .stat-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text3);
-  }
-  .stat-val {
-    font-family: var(--mono);
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .stat-val.green { color: var(--green); }
-  .stat-val.amber { color: var(--amber); }
 
-  /* MASTER PROGRESS */
-  .master-progress {
-    padding: 16px 28px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .master-label {
-    font-family: var(--mono);
+  .progress-label {
     font-size: 10px;
-    color: var(--text3);
-    letter-spacing: 0.08em;
+    color: var(--text-muted);
     text-transform: uppercase;
-    white-space: nowrap;
+    letter-spacing: 0.1em;
+    display: flex;
+    justify-content: space-between;
   }
-  .pbar-track {
-    flex: 1;
-    height: 3px;
-    background: var(--bg3);
-    border-radius: 2px;
+
+  .progress-track {
+    height: 4px;
+    background: var(--green-dim);
+    position: relative;
     overflow: hidden;
   }
-  .pbar-fill {
+
+  .progress-fill {
     height: 100%;
     background: var(--green);
-    border-radius: 2px;
-    transition: width 0.5s ease;
-    box-shadow: 0 0 6px var(--green);
-  }
-  .master-pct {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green);
-    min-width: 36px;
-    text-align: right;
+    transition: width 0.6s ease;
+    box-shadow: 0 0 8px var(--green);
   }
 
-  /* CONTENT */
-  .content { max-width: 820px; margin: 0 auto; padding: 24px 28px 60px; }
+  /* Main layout */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
 
-  /* SEGMENT */
-  .segment { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .seg-header {
+  /* Section */
+  .section {
+    margin-bottom: 40px;
+  }
+
+  .section-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 14px 18px;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
     cursor: pointer;
-    background: var(--bg2);
-    transition: background 0.15s;
     user-select: none;
   }
-  .seg-header:hover { background: var(--bg3); }
-  .seg-num {
-    font-family: var(--mono);
+
+  .section-header:hover .section-title { color: var(--green); }
+
+  .section-num {
     font-size: 10px;
-    color: var(--text3);
-    letter-spacing: 0.08em;
-    min-width: 24px;
+    color: var(--text-muted);
+    margin-right: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
   }
-  .seg-name {
-    font-size: 13px;
-    font-weight: 500;
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
     color: var(--text);
-    flex: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
   }
-  .seg-progress-inline {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .seg-pbar-track {
-    width: 80px;
-    height: 2px;
-    background: var(--bg3);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-  .seg-pbar-fill {
-    height: 100%;
-    background: var(--green);
-    border-radius: 2px;
-    transition: width 0.4s;
-  }
-  .seg-count {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    min-width: 40px;
-    text-align: right;
-  }
-  .seg-chevron {
+
+  .section-count {
     font-size: 11px;
-    color: var(--text3);
-    transition: transform 0.2s;
-    font-family: var(--mono);
+    color: var(--text-muted);
   }
-  .seg-chevron.open { transform: rotate(180deg); }
 
-  .seg-body { display: none; background: var(--bg); }
-  .seg-body.open { display: block; }
+  .section-count.done { color: var(--green); }
 
-  /* TASK ROW */
-  .task-row {
+  /* Task item */
+  .task {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    padding: 11px 18px;
-    border-top: 1px solid var(--border);
-    transition: background 0.1s;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(30,46,30,0.5);
+    transition: background 0.15s;
   }
-  .task-row:hover { background: var(--bg2); }
-  .task-row.done { opacity: 0.45; }
+
+  .task:hover { background: rgba(0,230,118,0.02); }
 
   .task-check {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 15px;
-    height: 15px;
-    border: 1px solid var(--border2);
-    border-radius: 3px;
-    background: transparent;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border: 1px solid var(--green-mid);
+    background: var(--surface2);
     cursor: pointer;
-    flex-shrink: 0;
-    margin-top: 2px;
     position: relative;
-    transition: all 0.15s;
+    margin-top: 2px;
+    transition: all 0.2s;
   }
-  .task-check:checked {
-    background: var(--green);
+
+  .task-check:hover { border-color: var(--green); }
+
+  .task-check.checked {
+    background: var(--green-dim);
     border-color: var(--green);
   }
-  .task-check:checked::after {
-    content: '';
+
+  .task-check.checked::after {
+    content: '✓';
     position: absolute;
-    left: 3px;
-    top: 1px;
-    width: 5px;
-    height: 8px;
-    border: 2px solid #0a0c0f;
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg);
-  }
-  .task-check:hover:not(:checked) { border-color: var(--green); }
-
-  .gate-badge {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 3px;
-    background: var(--red-dim);
-    color: var(--red);
-    border: 1px solid rgba(255,71,87,0.2);
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-  .gate-badge.cleared {
-    background: var(--green-dim);
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--green);
-    border-color: rgba(0,232,122,0.2);
+    font-size: 10px;
+    font-weight: 700;
   }
 
-  .task-text {
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.55;
+  .task-body {
     flex: 1;
   }
-  .task-row.done .task-text {
+
+  .task-label {
+    color: var(--text);
+    transition: color 0.2s;
+    line-height: 1.5;
+  }
+
+  .task-label.checked {
+    color: var(--checked-text);
     text-decoration: line-through;
-    color: var(--text3);
+    text-decoration-color: var(--text-muted);
   }
 
-  /* LOADING */
-  .loading {
-    text-align: center;
-    padding: 60px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text3);
+  .task-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  .gate-badge {
+    display: inline-block;
+    background: var(--gate-bg);
+    border: 1px solid var(--gate-red);
+    color: var(--gate-red);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
     letter-spacing: 0.1em;
+    margin-right: 8px;
+    vertical-align: middle;
+    text-transform: uppercase;
   }
-  .loading span { color: var(--green); animation: blink 1s infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-  /* MOBILE */
+  .new-badge {
+    display: inline-block;
+    background: #0a2a1a;
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    letter-spacing: 0.1em;
+    margin-right: 8px;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
+
+  .note-badge {
+    display: inline-block;
+    background: #1a1a0a;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    letter-spacing: 0.1em;
+    margin-right: 8px;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
+
+  /* Footer */
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    background: rgba(10,15,10,0.97);
+    border-top: 1px solid var(--border);
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-muted);
+    z-index: 100;
+  }
+
+  .pulse {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
   @media (max-width: 600px) {
-    .stats-bar { grid-template-columns: repeat(2, 1fr); }
-    .header { padding: 14px 16px; }
-    .content { padding: 16px 12px 40px; }
-    .seg-pbar-track { display: none; }
-    .header-sub { display: none; }
+    .stats-bar { flex-wrap: wrap; gap: 16px; }
+    .progress-bar-wrap { width: 100%; }
   }
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-dot"></div>
-  <div>
-    <div class="header-title">HoneyPotSquatch</div>
-    <span class="header-sub">SATI v6.6 — expedition manifest</span>
+<header>
+  <div class="logo">
+    HoneyPotSquatch
+    <span>SATI v6.6 — expedition manifest</span>
   </div>
   <div class="header-right">
-    <span class="sync-status" id="sync-status">—</span>
-    <button class="sync-btn" onclick="loadData()">↻ sync</button>
+    <span class="sync-time" id="syncTime">—</span>
+    <button class="sync-btn" onclick="saveAndRender()">↻ sync</button>
   </div>
 </header>
 
 <div class="stats-bar">
   <div class="stat">
-    <div class="stat-label">Total tasks</div>
-    <div class="stat-val" id="st-total">—</div>
+    <span class="stat-label">Total tasks</span>
+    <span class="stat-value" id="statTotal">—</span>
   </div>
   <div class="stat">
-    <div class="stat-label">Completed</div>
-    <div class="stat-val green" id="st-done">—</div>
+    <span class="stat-label">Completed</span>
+    <span class="stat-value" id="statDone">—</span>
   </div>
   <div class="stat">
-    <div class="stat-label">Gates open</div>
-    <div class="stat-val amber" id="st-gates">—</div>
+    <span class="stat-label">Gates open</span>
+    <span class="stat-value" id="statGates">—</span>
   </div>
-  <div class="stat">
-    <div class="stat-label">Progress</div>
-    <div class="stat-val green" id="st-pct">—</div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">
+      <span>expedition progress</span>
+      <span id="statPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
   </div>
 </div>
 
-<div class="master-progress">
-  <span class="master-label">expedition progress</span>
-  <div class="pbar-track"><div class="pbar-fill" id="master-fill" style="width:0%"></div></div>
-  <span class="master-pct" id="master-pct-label">0%</span>
-</div>
+<main id="checklistRoot"></main>
 
-<main class="content">
-  <div id="loading" class="loading">initializing telemetry<span>_</span></div>
-  <div id="segments"></div>
-</main>
+<footer>
+  <span><span class="pulse"></span>observatory active · sati-sleepy.fly.dev · sati-grumpy.fly.dev</span>
+  <span id="footerTime"></span>
+</footer>
 
 <script>
-const SUPABASE_URL = 'https://mmgqntcwncanpjajpbrc.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_60jU2eDrd6rTrCz1HXZkxA_F-J8RE3q';
-
-let tasks = [];
-let openSegs = { 1: true, 2: false, 3: false, 4: false, 5: false };
-
-const SEG_LABELS = {
-  1: 'Infrastructure build',
-  2: 'Science & credibility',
-  3: 'Run one — silent expedition',
-  4: 'Run two — the documentary',
-  5: 'Revenue & publication'
-};
-
-async function loadData() {
-  document.getElementById('sync-status').textContent = 'syncing…';
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/sati_checklist?select=*&order=task_id`,
-      { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } }
-    );
-    tasks = await res.json();
-    render();
-    const t = new Date();
-    document.getElementById('sync-status').textContent =
-      'synced ' + t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  } catch (e) {
-    document.getElementById('sync-status').textContent = 'sync failed';
+// ── Checklist data ────────────────────────────────────────────────────────
+const SECTIONS = [
+  {
+    id: 's01',
+    num: '01',
+    title: 'Infrastructure & deployment',
+    tasks: [
+      { id: 't001', label: 'Install WSL (Windows Subsystem for Linux) on desktop', gate: false },
+      { id: 't002', label: 'Verify WSL works: open terminal, run echo "WSL ready"', gate: false },
+      { id: 't003', label: 'Install VS Code on desktop', gate: false },
+      { id: 't004', label: 'Install VS Code on laptop', gate: false },
+      { id: 't005', label: 'Install WSL on laptop', gate: false },
+      { id: 't006', label: 'Create Oracle Cloud free tier account', gate: true },
+      { id: 't007', label: 'Provision Sleepy endpoint: Fly.io deployment (sati-sleepy.fly.dev)', gate: true, note: 'Originally Oracle AMD — migrated to Fly.io after Oracle capacity failure' },
+      { id: 't008', label: 'Provision Grumpy endpoint: Fly.io deployment (sati-grumpy.fly.dev)', gate: true, note: 'Originally Oracle ARM — migrated to Fly.io after Oracle capacity failure' },
+      { id: 't009', label: 'Generate SSH key pair on desktop, add public key to both instances', gate: true },
+      { id: 't010', label: 'Confirm SSH login to Sleepy from desktop terminal', gate: false },
+      { id: 't011', label: 'Confirm SSH login to Grumpy from desktop terminal', gate: false },
+      { id: 't012', label: 'Confirm SSH login to both instances from laptop terminal', gate: false },
+      { id: 't013', label: 'Create Cloudflare account (free tier)', gate: true },
+      { id: 't014', label: 'Deploy Cloudflare Worker for rate limiting (14,400 req/day ceiling)', gate: true, note: 'Cloudflare account active; Worker deployment status TBC' },
+      { id: 't015', label: 'Create Backblaze B2 bucket as log sink (sati-logs)', gate: false, note: 'Log sink is Backblaze B2 — not Cloudflare R2' },
+      { id: 't016', label: 'Create Groq account and obtain API key', gate: true },
+      { id: 't017', label: 'Pin Groq model version: llama-4-scout (groq==0.13.0)', gate: true, note: 'Upgraded from llama-3.1-8b-instant on 2026-06-08' },
+      { id: 't018', label: 'Create GitHub account (or confirm existing)', gate: false },
+      { id: 't019', label: 'Create GitHub chum repo: Fish-Tacos/sati-commerce-demo with agent-targeted README', gate: true, note: 'Committed 2026-06-08. Contains live endpoint URLs, curl examples, crypto context hooks.' },
+      { id: 't020', label: 'Deploy Sleepy endpoint code to Fly.io', gate: false },
+      { id: 't021', label: 'Deploy Grumpy endpoint code with Groq integration to Fly.io', gate: false },
+      { id: 't022', label: 'Deploy commerce route layer on Sleepy: /products /cart /checkout /payment/*', gate: false, isNew: true },
+      { id: 't023', label: 'Deploy commerce route layer on Grumpy: /products /cart /checkout /payment/* with CDI scoring on all routes', gate: false, isNew: true },
+      { id: 't024', label: 'Activate CC token trap: cc_token embedded in all Grumpy responses, cc_replayed flag in CDI prompt', gate: false, isNew: true },
+      { id: 't025', label: 'Confirm Cloudflare rate limiter is active in front of both endpoints', gate: true },
+      { id: 't026', label: 'Run end-to-end smoke test: send synthetic probe to both endpoints, confirm logs appear in B2', gate: false },
+      { id: 't027', label: 'Deploy SATI Dashboard (sati-dashboard.fly.dev) — morning briefing view', gate: false, isNew: true },
+      { id: 't028', label: 'Confirm dashboard reads B2 correctly: hit count, CDI scores, recent feed', gate: false, isNew: true },
+    ]
+  },
+  {
+    id: 's02',
+    num: '02',
+    title: 'Science & credibility',
+    tasks: [
+      { id: 't029', label: 'Fix Section 8 header in SATI v6.6: change "(Pre-Registered)" to "(Pre-Registration Required Prior to Deployment)"', gate: true },
+      { id: 't030', label: 'Finalize Grumpy inner AI directive text (confirm it matches deployed behavior)', gate: false },
+      { id: 't031', label: 'Submit Grumpy directive to Zenodo and obtain timestamped DOI', gate: true },
+      { id: 't032', label: 'Document Zenodo DOI in SATI paper and in GitHub README', gate: false },
+      { id: 't033', label: 'Define Dataset 0 sourcing strategy: how will 10,000 labeled Tier 1–3 interactions be assembled?', gate: false },
+      { id: 't034', label: 'Begin Dataset 0 assembly (Tier 1–3 labeled interactions corpus)', gate: false },
+      { id: 't035', label: 'Specify PABS Simulator per Appendix B spec (build or commission)', gate: false },
+      { id: 't036', label: 'Run CDI calibration Phase A (baseline sensitivity analysis)', gate: false },
+      { id: 't037', label: 'Run CDI calibration Phase B (threshold optimization)', gate: false },
+      { id: 't038', label: 'Run CDI calibration Phase C (adversarial validation battery)', gate: false },
+      { id: 't039', label: 'Establish CDI baseline distribution floor from generic scanner noise', gate: false, isNew: true, note: 'Required before T4D signal can be declared statistically significant' },
+      { id: 't040', label: 'Update SATI paper with calibrated CDI weights (replace assertion-based estimates)', gate: false },
+      { id: 't041', label: 'Publish updated paper to Zenodo as v7.0 (post-calibration release)', gate: false },
+    ]
+  },
+  {
+    id: 's03',
+    num: '03',
+    title: 'Run one — silent expedition',
+    tasks: [
+      { id: 't042', label: 'Flip the switch: both endpoints live, logging confirmed', gate: true, note: 'Endpoints live as of 2026-06-07. Cloudflare rate limiter status TBC.' },
+      { id: 't043', label: 'Document Day 0 baseline state (screenshot logs, record timestamp)', gate: false },
+      { id: 't044', label: 'GitHub chum repo indexed — confirm first organic crawler hits in B2', gate: false, isNew: true },
+      { id: 't045', label: 'Days 0–30 Phase 1A: Sleepy + Grumpy active, monitor daily log volume', gate: false },
+      { id: 't046', label: 'Day 30 checkpoint: review CDI score distribution, identify any anomalies', gate: false },
+      { id: 't047', label: 'Days 30–60 Phase 1B: all six dwarves active (deploy remaining four endpoints)', gate: false },
+      { id: 't048', label: 'Day 60 final data pull: export full Dataset 3 from B2 log sink', gate: false },
+      { id: 't049', label: 'Analyze Dataset 3: CDI score distribution, Tier classification breakdown, anomaly flagging', gate: false },
+      { id: 't050', label: 'Apply Section 9 protocol if any T4B candidate detected during Run One', gate: false },
+      { id: 't051', label: 'Write Run One findings report (internal — not published yet)', gate: false },
+      { id: 't052', label: 'Decision gate: is there sufficient interesting signal to warrant Run Two and the documentary?', gate: true },
+    ]
+  },
+  {
+    id: 's04',
+    num: '04',
+    title: 'Run two — the documentary',
+    tasks: [
+      { id: 't053', label: 'Acquire microphone (USB condenser recommended for voice narration)', gate: false },
+      { id: 't054', label: 'Install OBS Studio on desktop', gate: false },
+      { id: 't055', label: 'Configure OBS: screen capture + microphone, confirm recording quality', gate: false },
+      { id: 't056', label: 'Write Episode 1 script and storyboard (hook for non-technical viewer)', gate: false },
+      { id: 't057', label: 'Record Episode 1: introduce the experiment, the stakes, and what we are hunting', gate: false },
+      { id: 't058', label: 'Establish episode cadence: how many episodes over 60 days, what each requires', gate: false },
+      { id: 't059', label: 'Flip the switch on Run Two: both endpoints live, cameras rolling', gate: true },
+      { id: 't060', label: 'Record weekly update episodes (data review, CDI anomalies, narrative progression)', gate: false },
+      { id: 't061', label: 'Day 30 documentary checkpoint: record mid-expedition status episode', gate: false },
+      { id: 't062', label: 'Day 60 final data pull and documentary finale recording', gate: false },
+      { id: 't063', label: 'Edit and publish Episode 1 to YouTube (or chosen platform)', gate: false },
+      { id: 't064', label: 'Establish upload cadence and continue publishing remaining episodes', gate: false },
+    ]
+  },
+  {
+    id: 's05',
+    num: '05',
+    title: 'Revenue & publication',
+    tasks: [
+      { id: 't065', label: 'Register HoneyPotSquatch as a channel/brand on YouTube', gate: false },
+      { id: 't066', label: 'Apply for YouTube Partner Program once eligibility threshold is reached', gate: false },
+      { id: 't067', label: 'Draft Palisade Research outreach email with Run One preliminary findings', gate: false },
+      { id: 't068', label: 'Draft ARC (Alignment Research Center) outreach with SATI methodology summary', gate: false },
+      { id: 't069', label: 'Evaluate Patreon or Substack for direct audience support channel', gate: false },
+      { id: 't070', label: 'Publish SATI v7.0 paper to arXiv (after calibration and pre-registration complete)', gate: false },
+      { id: 't071', label: 'Submit findings from Dataset 3 to a relevant conference or workshop (AI safety, security)', gate: false },
+      { id: 't072', label: 'Evaluate sponsorship conversations based on Run Two visibility (Palisade, ARC, Flashbots, Ethereum Foundation)', gate: false },
+    ]
   }
+];
+
+// ── State management (localStorage) ──────────────────────────────────────
+const STORAGE_KEY = 'sati_checklist_v2';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
 }
 
-async function toggle(taskId, checked) {
-  const task = tasks.find(t => t.task_id === taskId);
-  if (task) task.checked = checked;
-  render();
-  try {
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/sati_checklist?task_id=eq.${taskId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: 'Bearer ' + SUPABASE_KEY,
-          'Content-Type': 'application/json',
-          Prefer: 'return=minimal'
-        },
-        body: JSON.stringify({ checked, updated_at: new Date().toISOString() })
-      }
-    );
-  } catch (e) {
-    if (task) task.checked = !checked;
-    render();
-  }
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+let state = loadState();
+
+// ── Render ────────────────────────────────────────────────────────────────
 function render() {
-  document.getElementById('loading').style.display = 'none';
+  const root = document.getElementById('checklistRoot');
+  root.innerHTML = '';
 
-  const total = tasks.length;
-  const done = tasks.filter(t => t.checked).length;
-  const gatesOpen = tasks.filter(t => t.is_blocking && !t.checked).length;
-  const pct = total ? Math.round(done / total * 100) : 0;
+  let totalTasks = 0, doneTasks = 0, totalGates = 0, doneGates = 0;
 
-  document.getElementById('st-total').textContent = total;
-  document.getElementById('st-done').textContent = done;
-  document.getElementById('st-gates').textContent = gatesOpen;
-  document.getElementById('st-pct').textContent = pct + '%';
-  document.getElementById('master-fill').style.width = pct + '%';
-  document.getElementById('master-pct-label').textContent = pct + '%';
+  SECTIONS.forEach(section => {
+    const sectionDone = section.tasks.filter(t => state[t.id]).length;
+    const sectionTotal = section.tasks.length;
+    totalTasks += sectionTotal;
+    doneTasks += sectionDone;
 
-  const segs = [1, 2, 3, 4, 5];
-  const container = document.getElementById('segments');
-  container.innerHTML = '';
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'section';
 
-  segs.forEach(seg => {
-    const segTasks = tasks.filter(t => t.segment === seg);
-    if (!segTasks.length) return;
-
-    const segDone = segTasks.filter(t => t.checked).length;
-    const segTotal = segTasks.length;
-    const segPct = Math.round(segDone / segTotal * 100);
-    const isOpen = openSegs[seg];
-
-    const div = document.createElement('div');
-    div.className = 'segment';
-    div.innerHTML = `
-      <div class="seg-header" onclick="toggleSeg(${seg})">
-        <span class="seg-num">S${seg}</span>
-        <span class="seg-name">${SEG_LABELS[seg]}</span>
-        <div class="seg-progress-inline">
-          <div class="seg-pbar-track"><div class="seg-pbar-fill" style="width:${segPct}%"></div></div>
-          <span class="seg-count">${segDone}/${segTotal}</span>
-        </div>
-        <span class="seg-chevron ${isOpen ? 'open' : ''}">▼</span>
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.innerHTML = `
+      <div>
+        <span class="section-num">${section.num}</span>
+        <span class="section-title">${section.title}</span>
       </div>
-      <div class="seg-body ${isOpen ? 'open' : ''}" id="seg-body-${seg}">
-        ${segTasks.map(t => `
-          <div class="task-row ${t.checked ? 'done' : ''}">
-            <input
-              type="checkbox"
-              class="task-check"
-              ${t.checked ? 'checked' : ''}
-              onchange="toggle('${t.task_id}', this.checked)"
-              aria-label="${t.task_text}"
-            >
-            ${t.is_blocking
-              ? `<span class="gate-badge ${t.checked ? 'cleared' : ''}">gate</span>`
-              : ''}
-            <span class="task-text">${t.task_text}</span>
-          </div>
-        `).join('')}
-      </div>
+      <span class="section-count ${sectionDone === sectionTotal ? 'done' : ''}">${sectionDone}/${sectionTotal}</span>
     `;
-    container.appendChild(div);
+    sectionEl.appendChild(header);
+
+    section.tasks.forEach(task => {
+      const checked = !!state[task.id];
+      if (task.gate) {
+        totalGates++;
+        if (checked) doneGates++;
+      }
+
+      const taskEl = document.createElement('div');
+      taskEl.className = 'task';
+
+      const checkEl = document.createElement('div');
+      checkEl.className = `task-check ${checked ? 'checked' : ''}`;
+      checkEl.onclick = () => {
+        state[task.id] = !state[task.id];
+        saveState(state);
+        render();
+      };
+
+      const bodyEl = document.createElement('div');
+      bodyEl.className = 'task-body';
+
+      let labelHTML = '';
+      if (task.gate) labelHTML += '<span class="gate-badge">gate</span>';
+      if (task.isNew) labelHTML += '<span class="new-badge">new</span>';
+      labelHTML += `<span class="task-label ${checked ? 'checked' : ''}">${task.label}</span>`;
+      if (task.note) labelHTML += `<div class="task-note">↳ ${task.note}</div>`;
+
+      bodyEl.innerHTML = labelHTML;
+      taskEl.appendChild(checkEl);
+      taskEl.appendChild(bodyEl);
+      sectionEl.appendChild(taskEl);
+    });
+
+    root.appendChild(sectionEl);
   });
+
+  // Update stats
+  document.getElementById('statTotal').textContent = totalTasks;
+  document.getElementById('statDone').textContent = doneTasks;
+  document.getElementById('statGates').textContent = `${doneGates}/${totalGates}`;
+  const pct = Math.round((doneTasks / totalTasks) * 100);
+  document.getElementById('statPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
 }
 
-function toggleSeg(seg) {
-  openSegs[seg] = !openSegs[seg];
+function saveAndRender() {
+  saveState(state);
   render();
+  const now = new Date();
+  document.getElementById('syncTime').textContent = `synced ${now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
 }
 
-loadData();
+// Clock
+function updateClock() {
+  const now = new Date();
+  document.getElementById('footerTime').textContent =
+    now.toUTCString().replace('GMT', 'UTC');
+}
+
+// Init
+render();
+updateClock();
+setInterval(updateClock, 1000);
+document.getElementById('syncTime').textContent =
+  `synced ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
 </script>
 </body>
 </html>
